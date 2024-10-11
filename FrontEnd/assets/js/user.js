@@ -5,6 +5,10 @@ import {
     fetchWorks    // API GET works
 } from './api.js';
 
+import{
+    initializeData,
+} from './project.js'
+
 document.addEventListener('DOMContentLoaded', function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -102,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = "bouton-supprimer";
                 deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-                deleteBtn.onclick = supprimerWork;
+                deleteBtn.onclick = function(event){ event.stopPropagation(); supprimerWork (event)};
 
             
                 workItem.appendChild(deleteBtn);
@@ -131,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             await deleteWork(id, authToken);
             console.log('Travail supprimé avec succès');
             work.remove();
+            initializeData(event);
         } catch (error) {
             console.error("Erreur lors de la suppression :", error);
             alert("Une erreur est survenue lors de la suppression. Veuillez réessayer.");
@@ -204,7 +209,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
         try {
             const newWork = await sendWork(formData, authToken);
+            ouvrirModale(event);
+            initializeData(event);
+     
+
             console.log('Nouveau travail ajouté :', newWork);
+            
         } catch (error) {
             console.error("Erreur lors de l'envoi des travaux :", error);
             alert("Erreur lors de l'envoi des travaux");

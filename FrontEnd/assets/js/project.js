@@ -1,7 +1,7 @@
 import { fetchWorks, fetchCategories } from './api.js';
 
 
-async function initializeData() {
+export async function initializeData() {
     const worksJson = await fetchWorks();
     const categoriesJson = await fetchCategories();
     
@@ -12,7 +12,7 @@ async function initializeData() {
 //Affichage dynamique des travaux//
 const workContainer = document.querySelector(".gallery");
 
-function displayWorks(works) {
+  function displayWorks(works) {
   workContainer.innerHTML = "";
 
   works.forEach(work => {
