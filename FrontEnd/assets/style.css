@@ -220,6 +220,35 @@ footer nav ul {
 }
 
 
+#submit-modale{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	border-radius: 60px ;
+	padding: 10px;
+	border: none;
+	justify-content: center;
+
+}
+
+#envoyer-modale{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	border-radius: 60px ;
+	padding: 10px;
+	border: none;
+	justify-content: center;
+}
+
+
+
 
 /* login */
 

@@ -73,10 +73,8 @@ function createCategoryButtons(categoriesJson, worksJson) {
 }
 
 // Initialisation
-initializeData();
 
-
-
+  initializeData();
 
 
 

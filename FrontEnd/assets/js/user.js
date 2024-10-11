@@ -1,19 +1,32 @@
-import { 
+import {
     deleteWork,   // API DELETE works
     sendWork,     // API POST works
     fetchCategories, // API GET catégories
     fetchWorks    // API GET works
 } from './api.js';
 
-/*Vérification Token et UI admin*/
+document.addEventListener('DOMContentLoaded', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-document.addEventListener('DOMContentLoaded', function () {
-
+    // Déclarations des variables
     const authToken = sessionStorage.getItem('authToken');
+    const loginLogout = document.getElementById('logout');
+    const fermerModaleBtn = document.getElementById('close-modale');
+    const retourModaleBtn = document.getElementById('back-module');
+    const envoyer = document.getElementById('envoyer-modale');
+    const modale = document.querySelector('.modale-overlay');
+    const ajouterPhoto = document.getElementById('submit-modale');
+    const modaleTitle = document.querySelector('.titre-modale');
+    const photoUpload = document.querySelector('.photo-upload-container');
+    const selectTitle = document.querySelector('.select-title');
+    const modale2 = document.querySelector('.modale-content2');
+    const selectCategorie = document.querySelector('.select-categorie');
+    const workModaleContainer = document.querySelector(".modale-content");
 
+    // Affichage de l'UI admin si authToken est présent
     if (authToken) {
-        const loginLogout = document.getElementById('logout');
-        loginLogout.textContent = "Logout"
+        loginLogout.textContent = "Logout";
 
         const removeFilterButton = document.querySelector('.categories-button');
         removeFilterButton.style.display = "none";
@@ -28,48 +41,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mesProjets = document.getElementById('portfolio');
         const h2 = mesProjets.querySelector('h2');
-
         h2.appendChild(modifierDiv);
 
-    } else {
-        console.log('Aucun utilisateur');
+        // Fonction de déconnexion
+
+        loginLogout.addEventListener('click', function () {
+            sessionStorage.removeItem('authToken');
+            window.location.reload();
+        })
+
+        // Écouteurs d'événements
+
+        modifierButton.onclick = function(event){ event.stopPropagation(); ouvrirModale (event)};
+        fermerModaleBtn.onclick = function(event){ event.stopPropagation();fermerModale (event)};
+        retourModaleBtn.onclick = function(event){ event.stopPropagation();ouvrirModale (event)};
+        envoyer.onclick = function(event){ event.stopPropagation();envoyerWork (event)};
+        ajouterPhoto.onclick = function(event){ event.stopPropagation(); ajoutPhoto (event)};
+
+
+        window.addEventListener('click', function (event) {
+            if (event.target == modale) {
+                fermerModale();
+            }
+        });
+
     }
-});
 
 
-/*Fonctions déconexions*/
+    // Fonctions liées à la modale
+    async function ouvrirModale(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-document.addEventListener('DOMContentLoaded', function () {
-
-    const loginLogout = document.getElementById('logout');
-    loginLogout.addEventListener('click', function (event) {
-        sessionStorage.removeItem('authToken');
-    }
-    )
-})
-
-
-/* Modale */
-
-document.addEventListener('DOMContentLoaded', function () {
-    const ouvrirModaleBtn = document.querySelector('.modifier-bouton');
-    const workModaleContainer = document.querySelector(".modale-content");
-    const fermerModaleBtn = document.getElementById('close-modale');
-    const retourModaleBtn = document.getElementById('back-module');
-    const envoyer = document.getElementById('envoyer-modale');
-    const modale = document.querySelector('.modale-overlay');
-    const ajouterPhoto = document.getElementById('submit-modale');
-    const modaleTitle = document.querySelector('.titre-modale');
-    const photoUpload = document.querySelector('.photo-upload-container');
-    const selectTitle = document.querySelector('.select-title');
-    const modale2 = document.querySelector('.modale-content2')
-    const selectCategorie = document.querySelector('.select-categorie');
-
-
-
-    //Première page modale et affichage des travaux
-
-    async function ouvrirModale() {
         try {
             const works = await fetchWorks();
 
@@ -85,10 +88,8 @@ document.addEventListener('DOMContentLoaded', function () {
             ajouterPhoto.style.display = 'flex';
             modaleTitle.textContent = 'Galerie';
 
-
             workModaleContainer.innerHTML = "";
             works.forEach(work => {
-
                 const workItem = document.createElement('figure');
                 workItem.setAttribute('data-category', work.categoryId);
                 workItem.setAttribute('data-id', work.id);
@@ -99,44 +100,50 @@ document.addEventListener('DOMContentLoaded', function () {
                 workImage.alt = work.title;
 
                 const deleteBtn = document.createElement('button');
-                deleteBtn.className = "bouton-supprimer"; 
-                deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>'; 
-                deleteBtn.addEventListener('click', supprimerWork); 
-    
+                deleteBtn.className = "bouton-supprimer";
+                deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                deleteBtn.onclick = supprimerWork;
+
+            
                 workItem.appendChild(deleteBtn);
                 workItem.appendChild(workImage);
                 workModaleContainer.appendChild(workItem);
-            }); 
-
+            });
         } catch (error) {
             console.error("Erreur lors de la récupération des travaux :", error);
         }
     }
 
-    // Fonction de suppression des travaux 
-
-
     async function supprimerWork(event) {
-        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce travail ?");
-        if (confirmation){}
         event.preventDefault();
         event.stopPropagation();
-
+    
     
         const work = event.target.closest('figure');
         const id = work.dataset.id;
-
+        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce travail ?");
+        if (!confirmation) return;
+    
+        const deleteButton = event.target;
+        deleteButton.disabled = true;
+    
         try {
-            await deleteWork(id);
+            await deleteWork(id, authToken);
+            console.log('Travail supprimé avec succès');
+            work.remove();
         } catch (error) {
             console.error("Erreur lors de la suppression :", error);
+            alert("Une erreur est survenue lors de la suppression. Veuillez réessayer.");
+        } finally {
+            deleteButton.disabled = false;
         }
-    }  
 
+        return false;
+    }
 
-    // Fonction d'ajout de nouveaux travaux
+    async function ajoutPhoto(event) {
+        event.preventDefault();
 
-    async function ajoutPhoto() {
         try {
             const categoriesJson = await fetchCategories();
 
@@ -144,12 +151,12 @@ document.addEventListener('DOMContentLoaded', function () {
             photoUpload.style.display = 'flex';
             retourModaleBtn.innerHTML = '<i class="fas fa-arrow-left"></i>';
             modaleTitle.textContent = 'Ajout photo';
-      
+
             selectTitle.style.display = 'flex';
             selectCategorie.style.display = 'flex';
             ajouterPhoto.style.display = 'none';
             envoyer.style.display = 'flex';
-            
+
             const envoyerContenair = document.createElement('div');
             envoyerContenair.className = 'envoyer-content';
 
@@ -159,37 +166,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
             workModaleContainer.innerHTML = "";
             workModaleContainer.appendChild(envoyerContenair);
-         
+
             const select = document.getElementById('optionsMultiples');
-            
+
             categoriesJson.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category.id;
                 option.textContent = category.name;
                 select.appendChild(option);
             });
-
         } catch (error) {
-            console.error("Erreur lors de la récupération des travaux :", error);
+            console.error("Erreur lors de la récupération des catégories :", error);
         }
-
     }
-
-    //Fonction d'envoie des nouveaux travaux vers l'API
 
     async function envoyerWork(event) {
         event.preventDefault();
+        event.stopPropagation()
 
         const titreElement = document.getElementById('titre');
         const categorieElement = document.getElementById('optionsMultiples');
         const imageElement = document.querySelector('.photo-upload-container input[type="file"]');
-       
+
         const titre = titreElement.value;
         const categoryId = categorieElement.value;
         const image = imageElement.files[0];
 
         if (!titre || !categoryId || !image) {
             alert('Veuillez remplir tous les champs correctement');
+            return;
         }
 
         const formData = new FormData();
@@ -197,30 +202,22 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('category', categoryId);
         formData.append('image', image);
 
-        try {const newWork = await sendWork(formData);} 
-        catch (error) {alert("Erreur lors de l'envoie des travaux")}
+        try {
+            const newWork = await sendWork(formData, authToken);
+            console.log('Nouveau travail ajouté :', newWork);
+        } catch (error) {
+            console.error("Erreur lors de l'envoi des travaux :", error);
+            alert("Erreur lors de l'envoi des travaux");
+        }
+
+        return false;
     }
 
-    //Appel de fonction et fermeture de la modale 
-
-    function fermerModale() {
+    function fermerModale(event) {
+        event.preventDefault();
         modale.style.display = "none";
         document.body.classList.remove('body-no-scroll');
     }
 
-    ouvrirModaleBtn.addEventListener('click', ouvrirModale);
 
-    fermerModaleBtn.addEventListener('click', fermerModale);
-
-    ajouterPhoto.addEventListener('click', ajoutPhoto);
-
-    retourModaleBtn.addEventListener('click', ouvrirModale);
-
-    envoyer.addEventListener('click', envoyerWork);
-
-    window.addEventListener('click', function (event) {
-        if (event.target == modale) {
-            fermerModale();
-        }
-    });
 });

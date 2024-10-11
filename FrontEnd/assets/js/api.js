@@ -29,33 +29,34 @@ export async function login(email, password) {
 /*Export de l'API DELETE works*/
 
 
-export async function deleteWork(id) {
-    const authToken = sessionStorage.getItem('authToken');
+export async function deleteWork(id, authToken) {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
         method: 'DELETE',
-        headers: {'Authorization': `Bearer ${authToken}`}
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        }
     });
 
-    if (response.status === 204) {
-        return { success: true };
-      }
-      try {
-        return await response.json();
-      } catch {
-        return { success: true };
-      }
+    if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+    }
+
+    return response;
 }
 
 
 /*Export de l'API POST works*/
 
-export async function sendWork(formData) {
-    const authToken = sessionStorage.getItem('authToken');
+export async function sendWork(formData, authToken) {
     const response = await fetch('http://localhost:5678/api/works', {
         method: 'POST',
         body: formData,
         headers: { 'Authorization': `Bearer ${authToken}` }
     });
 
-    return await response.json();
+    if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+    }
+
+    return response;
 }

@@ -3,7 +3,7 @@ import { login } from './api.js';
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login');
 
-    loginForm.addEventListener('submit', async function(event) {
+    loginForm.onsubmit = async function(event) {
         event.preventDefault();
 
         const email = document.getElementById('username').value;
@@ -29,11 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
         loginForm.after(error);
 
        }
+    };
 
         
-    });
-});
-
+})
 
 
   
