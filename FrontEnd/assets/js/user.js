@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const retourModaleBtn = document.getElementById('back-module');
     const envoyer = document.getElementById('envoyer-modale');
     const modale = document.querySelector('.modale-overlay');
+    const modaleContent = document.querySelector('.modale');
     const ajouterPhoto = document.getElementById('submit-modale');
     const modaleTitle = document.querySelector('.titre-modale');
     const photoUpload = document.querySelector('.photo-upload-container');
     const selectTitle = document.querySelector('.select-title');
-    const modale2 = document.querySelector('.modale-content2');
     const selectCategorie = document.querySelector('.select-categorie');
     const workModaleContainer = document.querySelector(".modale-content");
 
@@ -63,9 +63,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
         ajouterPhoto.onclick = function(event){ event.stopPropagation(); ajoutPhoto (event)};
 
 
-        window.addEventListener('click', function (event) {
-            if (event.target == modale) {
-                fermerModale();
+        document.addEventListener('click', function(event) {
+            if (!modaleContent.contains(event.target)) {
+                fermerModale(event);
             }
         });
 
