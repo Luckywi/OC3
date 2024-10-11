@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
         try {
             const newWork = await sendWork(formData, authToken);
+            workModaleContainer.innerHTML = "";
             ouvrirModale(event);
             initializeData(event);
      
