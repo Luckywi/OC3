@@ -42,6 +42,7 @@ function createCategoryButtons(categoriesJson, worksJson) {
   //Ajout du bouton 'Tous'//
   const allCategories = document.createElement('button');
   allCategories.textContent = 'Tous';
+  allCategories.classList.add('active');
   categoriesDiv.appendChild(allCategories);
 
   allCategories.addEventListener('click', () => {
