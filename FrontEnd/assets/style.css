@@ -130,18 +130,28 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
 .gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+}
+
+.gallery figure {
+    margin: 0; 
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
 }
 
 .gallery img {
-	width: 100%;
-
+    width: 100%;
+    height: 25vw;
+    object-fit: cover; 
+    object-position: center; 
 }
+
 #contact {
 	width: 50%;
 margin: auto;
