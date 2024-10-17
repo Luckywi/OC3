@@ -27,10 +27,15 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const selectTitle = document.querySelector('.select-title');
     const selectCategorie = document.querySelector('.select-categorie');
     const workModaleContainer = document.querySelector(".modale-content");
+    const titreElement = document.getElementById('titre');
+    const imageElement = document.querySelector('.photo-upload-container input[type="file"]');
 
     // Affichage de l'UI admin si authToken est présent
     if (authToken) {
         loginLogout.textContent = "Logout";
+
+        const afficherBar = document.querySelector('.bar')
+        afficherBar.style.display = 'flex';
 
         const removeFilterButton = document.querySelector('.categories-button');
         removeFilterButton.style.display = "none";
@@ -161,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             selectCategorie.style.display = 'flex';
             ajouterPhoto.style.display = 'none';
             envoyer.style.display = 'flex';
+            envoyer.style.backgroundColor ='#A7A7A7';
 
             const envoyerContenair = document.createElement('div');
             envoyerContenair.className = 'envoyer-content';
@@ -170,9 +176,25 @@ document.addEventListener('DOMContentLoaded', function (event) {
             envoyerContenair.appendChild(selectCategorie);
 
             workModaleContainer.innerHTML = "";
-            workModaleContainer.appendChild(envoyerContenair);
+            workModaleContainer.appendChild(envoyerContenair);            
 
             const select = document.getElementById('optionsMultiples');
+            select.innerHTML = '';
+
+            const titreInput = document.getElementById('titre');
+            titreInput.value ='';
+
+            const imageSrc = document.getElementById('image-preview');
+            imageSrc.src = '';
+
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.style.display ='none';
+
+            const elementsToShow = document.querySelectorAll('.photo-upload-container .fa-image, .file-input-label,  .file-input-text');
+            elementsToShow.forEach(element => {
+                element.style.display = 'flex';
+            });
+
 
             categoriesJson.forEach(category => {
                 const option = document.createElement('option');
@@ -185,23 +207,62 @@ document.addEventListener('DOMContentLoaded', function (event) {
         }
     }
 
+
+    // Fonction preview photo 
+
+        imageElement.addEventListener('change', function(){
+
+        const image = imageElement.files[0];        
+
+
+        const previewContainer = document.querySelector('.image-preview-container img')
+        const imagePreview = document.getElementById('image-preview')
+
+        const imageUrl = URL.createObjectURL(image);
+        previewContainer.src = imageUrl;
+        imagePreview.style.display = 'flex';
+
+        const elementsToHide = document.querySelectorAll('.photo-upload-container .fa-image, .file-input-label,  .file-input-text');
+        elementsToHide.forEach(element => {
+            element.style.display = 'none';
+        });
+        })
+
+
+    
+    // Fonction changment couleur bouton quand les champs sont remplis 
+
+    function verifierChamps() {
+        if (titreElement.value.trim() !== '' && imageElement.files.length > 0) {
+            envoyer.style.backgroundColor = '#1D6154';
+        }
+    }
+
+    document.getElementById('titre').addEventListener('input', verifierChamps);
+    document.querySelector('.photo-upload-container input[type="file"]').addEventListener('change', verifierChamps);
+
+
+    // Fonction pour vérifier les champs et les envoyer à l'API 
+
+
     async function envoyerWork(event) {
         event.preventDefault();
         event.stopPropagation()
-
+        
         const titreElement = document.getElementById('titre');
         const categorieElement = document.getElementById('optionsMultiples');
         const imageElement = document.querySelector('.photo-upload-container input[type="file"]');
-
-        const titre = titreElement.value;
+        
+        const titre = titreElement.value.trim();
         const categoryId = categorieElement.value;
         const image = imageElement.files[0];
-
+    
         if (!titre || !categoryId || !image) {
             alert('Veuillez remplir tous les champs correctement');
-            return;
+            return false;
         }
 
+        
         const formData = new FormData();
         formData.append('title', titre);
         formData.append('category', categoryId);

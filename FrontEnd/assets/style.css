@@ -54,7 +54,7 @@ table {
 /** end reset css**/
 body {
 	max-width: 1140px;
-	margin:auto;
+	margin: auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
@@ -459,14 +459,12 @@ footer nav ul {
 
 .photo-upload-container{
 	background-color: #E8F1F6;
-	height: 200px;
+	height: 169px;
+	width: 420px;
 	flex-direction: column;
 	align-items: center;
 	padding: 0px;
 	margin: 0px;
-
-
-
 }
 
 .photo-upload-container .fa-image{
@@ -475,13 +473,79 @@ footer nav ul {
 	padding: 10px;
 }
 
+.file-input-hidden {
+	position: absolute;
+	left: -9999px;
+  }
+  
+  .file-input-label {
+	display: inline-block;
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	width: auto;
+	text-align: center;
+	background-color: #CBD6DC;
+	color: #306685;
+	border: none;
+	font-weight: 500;
+	border-radius: 50px;
+	cursor: pointer;
+  }
+  
+  .file-input-label:hover {
+	background-color: #e0e0e0;
+  }
+  
+  .file-input-text {
+	font-size: 10px;
+	font-weight: 400;
+	padding: 5px;
+	text-align: center;
+
+
+	
+  }
+  
+  .file-name {
+	margin-left: 10px;
+  }
+  
+  .image-preview-container {
+	width: auto;
+	height: 169px;
+	overflow: hidden;
+  }
+  
+  #image-preview {
+	z-index: 2000;
+	width: auto;
+	height: 100%;
+  }
+  
+
+
+
 .select-title{
 	display: flex;
 	flex-direction: column;
-	
-	
+}
+
+.select-title label{
+	font-size: 14px;
+	padding-bottom: 7px;
+	padding-top: 20px;
 
 }
+
+
+.select-title input{
+	height: 51px;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	border: none;
+
+}
+
 
 
 .select-categorie{
@@ -489,6 +553,21 @@ footer nav ul {
 	flex-direction: column;
 
 }
+
+
+.select-categorie label{
+	font-size: 14px;
+	padding-bottom: 7px;
+	padding-top: 20px;
+}
+
+.select-categorie select{
+	height: 51px;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	padding: 10px;
+	border: none;
+}
+
 
 #close-modale{
 	border: none;
@@ -515,4 +594,31 @@ footer nav ul {
 	margin: auto;
 
 
+}
+
+#optionsMultiples{
+	font-family: 'Work Sans';
+}
+
+
+#titre{
+	font-family: 'Work Sans';
+}
+
+.bar{
+	display: none;
+}
+
+.bar-edition {
+    background-color: black;
+    padding: 20px;
+    color: white;
+    text-align: center;
+	margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000; /* Assure que la barre reste au-dessus des autres éléments */
 }
