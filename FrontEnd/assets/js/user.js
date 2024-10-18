@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     // Affichage de l'UI admin si authToken est présent
     if (authToken) {
-        loginLogout.textContent = "Logout";
+        loginLogout.textContent = "logout";
 
         const afficherBar = document.querySelector('.bar')
         afficherBar.style.display = 'flex';

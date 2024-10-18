@@ -11,7 +11,7 @@ a {
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
+del, dfn, em, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
@@ -142,14 +142,14 @@ li:hover {
     margin: 0; 
     display: flex;
     flex-direction: column;
+	aspect-ratio: 1 / 1.3;
     height: 100%; 
 }
 
 .gallery img {
-    width: 100%;
-    height: 25vw;
-    object-fit: cover; 
-    object-position: center; 
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 #contact {
@@ -397,18 +397,20 @@ footer nav ul {
     justify-content: flex-start; 
 }
 
-.modale-content figure {
+.modale-content figure.workObject {
     width: calc(20% - 16px);
+    aspect-ratio: 1 / 1.3;
     margin: 0;
-    aspect-ratio: 1 / 1; 
     position: relative;
+    overflow: hidden;
 }
 
-.modale-content figure img {
+.workObject img {
     width: 100%;
-    height: max-content;
+    height: 100%;
     object-fit: cover;
 }
+
 
 
 
@@ -425,14 +427,6 @@ footer nav ul {
     right: 0;
 	font-size: 10px;
 	
-}
-
-
-.modale-content figure img{
-
-	display: flex;
-	width: 100%;
-	height: auto;
 }
 
 
@@ -630,12 +624,4 @@ footer nav ul {
     left: 0;
     width: 100%;
     box-sizing: border-box;
-}
-
-
-@media screen and (max-width: 1500px){
-	.gallery img {
-		height: 35vw;
-	}
-
 }
