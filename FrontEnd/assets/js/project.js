@@ -1,18 +1,19 @@
+// Import des fonctions API
 import { fetchWorks, fetchCategories } from './api.js';
 
-
+// Export affichage des works et des catégories 
 export async function initializeData() {
-    const worksJson = await fetchWorks();
-    const categoriesJson = await fetchCategories();
-    
-    displayWorks(worksJson);
-    createCategoryButtons(categoriesJson, worksJson);
+  const worksJson = await fetchWorks();
+  const categoriesJson = await fetchCategories();
+
+  displayWorks(worksJson);
+  createCategoryButtons(categoriesJson, worksJson);
 }
 
 //Affichage dynamique des travaux//
 const workContainer = document.querySelector(".gallery");
 
-  function displayWorks(works) {
+function displayWorks(works) {
   workContainer.innerHTML = "";
 
   works.forEach(work => {
@@ -75,7 +76,7 @@ function createCategoryButtons(categoriesJson, worksJson) {
 
 // Initialisation
 
-  initializeData();
+initializeData();
 
 
 
