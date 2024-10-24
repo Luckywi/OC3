@@ -1,24 +1,21 @@
+// URL de base pour éviter la répétition
+const API_URL = 'http://localhost:5678/api';
 
-/*Export de l'API GET works*/
-
+/* Récupération des works */
 export async function fetchWorks() {
-    const response = await fetch('http://localhost:5678/api/works');
+    const response = await fetch(`${API_URL}/works`);
     return await response.json();
 }
 
-
-/*Export de l'API GET catégories*/
-
+/* Récupération des catégories */
 export async function fetchCategories() {
-    const response = await fetch('http://localhost:5678/api/categories');
+    const response = await fetch(`${API_URL}/categories`);
     return await response.json();
 }
 
-
-/*Export de l'API POST login*/
-
+/* Connexion utilisateur */
 export async function login(email, password) {
-    const response = await fetch('http://localhost:5678/api/users/login', {
+    const response = await fetch(`${API_URL}/users/login`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password })
@@ -26,11 +23,9 @@ export async function login(email, password) {
     return await response.json();
 }
 
-/*Export de l'API DELETE works*/
-
-
+/* Suppression d'un work */
 export async function deleteWork(id, authToken) {
-    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+    const response = await fetch(`${API_URL}/works/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${authToken}`
@@ -40,15 +35,12 @@ export async function deleteWork(id, authToken) {
     if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
     }
-
     return response;
 }
 
-
-/*Export de l'API POST works*/
-
+/* Envoi d'un nouveau work */
 export async function sendWork(formData, authToken) {
-    const response = await fetch('http://localhost:5678/api/works', {
+    const response = await fetch(`${API_URL}/works`, {
         method: 'POST',
         body: formData,
         headers: { 'Authorization': `Bearer ${authToken}` }
@@ -57,6 +49,5 @@ export async function sendWork(formData, authToken) {
     if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
     }
-
     return response;
 }
