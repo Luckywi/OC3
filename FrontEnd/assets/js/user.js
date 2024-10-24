@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 
     
-    // Fonction changment couleur bouton quand les champs sont remplis 
+    // Fonction changment couleur bouton quand les champs sont remplis/vide 
 
     function verifierChamps() {
         if (titreElement.value.trim() !== '' && imageElement.files.length > 0) {
@@ -256,6 +256,27 @@ document.addEventListener('DOMContentLoaded', function (event) {
         const titre = titreElement.value.trim();
         const categoryId = categorieElement.value;
         const image = imageElement.files[0];
+
+
+        // Fonction pour vérifier la taille et le format des fichiers 
+
+        const maxSize = 4194304;
+        const validTypes = ['image/jpeg', 'image/png'];
+
+        if (image) {
+            
+            if (image.size > maxSize){
+                alert('Erreur : le fichier dépasse 4Mo')
+                imageElement.value = '';
+                return;
+            }
+
+            if (!validTypes.includes(image.type)){
+                alert('Erreur : Seuls les formats JPG et PNG sont acceptés')
+                imageElement.value = '';
+                return; 
+            }
+        }
     
         if (!titre || !categoryId || !image) {
             alert('Veuillez remplir tous les champs correctement');
@@ -293,3 +314,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 
 });
+
+
+
+
