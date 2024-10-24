@@ -235,6 +235,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
     function verifierChamps() {
         if (titreElement.value.trim() !== '' && imageElement.files.length > 0) {
             envoyer.style.backgroundColor = '#1D6154';
+        } else {
+            envoyer.style.backgroundColor = '#A7A7A7';
         }
     }
 
